@@ -1,0 +1,28 @@
+<?php
+    if(empty($_GET['Page'])){
+        include "_Page/Dashboard/Dashboard.php";
+    }else{
+        $Page=$_GET['Page'];
+        //Index Halaman
+        $page_arry=[
+            "MyProfile"         =>  "_Page/MyProfile/MyProfile.php",
+            "Akses"             =>  "_Page/Akses/Akses.php",
+            "Kelas"             =>  "_Page/Kelas/Kelas.php",
+            "Siswa"             =>  "_Page/Siswa/Siswa.php",
+            "Permintaan"        =>  "_Page/Permintaan/Permintaan.php",
+            "PermintaanSiswa"   =>  "_Page/PermintaanSiswa/PermintaanSiswa.php",
+            "SettingGeneral"    =>  "_Page/SettingGeneral/SettingGeneral.php",
+            "Bantuan"              =>  "_Page/Bantuan/Bantuan.php",
+        ];
+
+        //Tangkap 'Page'
+        $Page = !empty($_GET['Page']) ? $_GET['Page'] : "";
+
+        //Kondisi Pada masing-masing Page
+        if (array_key_exists($Page, $page_arry)) { 
+            include $page_arry[$Page]; 
+        } else { 
+            include "_Page/Error/PageNotFound.php";
+        }
+    }
+?>

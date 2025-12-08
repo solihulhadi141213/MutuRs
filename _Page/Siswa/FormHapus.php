@@ -1,0 +1,107 @@
+<?php
+    //Zona Waktu
+    date_default_timezone_set('Asia/Jakarta');
+
+    //Koneksi
+    include "../../_Config/Connection.php";
+    include "../../_Config/SettingGeneral.php";
+    include "../../_Config/GlobalFunction.php";
+    include "../../_Config/Session.php";
+
+    //Validasi Sesi Akses
+    if (empty($SessionIdAccess)) {
+        echo '
+            <div class="alert alert-danger">
+                <small>
+                    Sesi akses sudah berakhir. Silahkan <b>login</b> ulang!
+                </small>
+            </div>
+        ';
+        exit;
+    }
+    //Tangkap id_organization_class
+    if(empty($_POST['id_student'])){
+         echo '
+            <div class="alert alert-danger">
+                <small>
+                    ID sISWA Tidak Boleh Kosong!
+                </small>
+            </div>
+        ';
+        exit;
+    }
+
+    //Buat variabel
+    $id_student=validateAndSanitizeInput($_POST['id_student']);
+
+    //Buka Data sISWA
+    $Qry = $Conn->prepare("SELECT * FROM siswa WHERE id_siswa = ?");
+    $Qry->bind_param("i", $id_student);
+    if (!$Qry->execute()) {
+        $error=$Conn->error;
+        echo '
+            <div class="alert alert-danger">
+                <small>Terjadi kesalahan pada saat membuka data dari database!<br>Keterangan : '.$error.'</small>
+            </div>
+        ';
+    }else{
+        $Result = $Qry->get_result();
+        $Data = $Result->fetch_assoc();
+        $Qry->close();
+
+        //Buat Variabel
+        $id_kelas   = $Data['id_kelas'];
+        $nis        = $Data['nis'];
+        $nama       = $Data['nama'];
+        $gender     = $Data['gender'];
+        $email      = $Data['email'];
+        $foto_siswa = $Data['foto_siswa'];
+
+        //Tampilkan Data
+        echo '
+            <input type="hidden" name="id_student" value="'.$id_student.'">
+        ';
+        
+        echo '
+            <div class="row mb-2">
+                <div class="col-4"><small>Nama</small></div>
+                <div class="col-1"><small>:</small></div>
+                <div class="col-7">
+                    <small class="text text-grayish">'.$nama.'</small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4"><small>NIS</small></div>
+                <div class="col-1"><small>:</small></div>
+                <div class="col-7">
+                    <small class="text text-grayish">'.$nis.'</small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4"><small>Gender</small></div>
+                <div class="col-1"><small>:</small></div>
+                <div class="col-7">
+                    <small class="text text-grayish">'.$gender.'</small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-4"><small>Email</small></div>
+                <div class="col-1"><small>:</small></div>
+                <div class="col-7">
+                    <small class="text text-grayish">'.$email.'</small>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12 text-center">
+                    <div class="alert alert-danger">
+                        <h2>Penting!</h2>
+                        <small>
+                            Menghapus data siswa akan menghapus data turunannya, termasuk riwayat permintaan perbaiikan fasilitas sekolah dan akun akses.<br>
+                            <b>Apakah anda yakin akan menghapus data tersebut?</b>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        ';
+    }
+?>

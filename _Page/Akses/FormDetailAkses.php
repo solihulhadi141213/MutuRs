@@ -1,0 +1,111 @@
+<?php
+    //Zona Waktu
+    date_default_timezone_set('Asia/Jakarta');
+
+    //Koneksi
+    include "../../_Config/Connection.php";
+    include "../../_Config/SettingGeneral.php";
+    include "../../_Config/GlobalFunction.php";
+    include "../../_Config/Session.php";
+
+    // Ambil protokol (http/https)
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' 
+            || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+    // Ambil host (domain atau IP + port)
+    $host = $_SERVER['HTTP_HOST'];
+
+    // Ambil folder root project (level pertama setelah domain)
+    $scriptName = $_SERVER['SCRIPT_NAME'];
+    $projectRoot = explode('/', trim($scriptName, '/'))[0]; // "PaySiswa"
+
+    // Satukan jadi base URL root project
+    $base_url_with_path = rtrim($protocol . $host . '/' . $projectRoot, '/');
+
+    //Validasi Sesi Akses
+    if (empty($SessionIdAccess)) {
+        echo '
+            <div class="alert alert-danger">
+                <small>
+                    Sesi akses sudah berakhir. Silahkan <b>login</b> ulang!
+                </small>
+            </div>
+        ';
+        exit;
+    }
+    //Tangkap id_access
+    if(empty($_POST['id_access'])){
+         echo '
+            <div class="alert alert-danger">
+                <small>
+                    ID Access Tidak Boleh Kosong!
+                </small>
+            </div>
+        ';
+        exit;
+    }
+
+    //Buat variabel
+    $id_access=validateAndSanitizeInput($_POST['id_access']);
+
+    //Buka Data access
+    $Qry = $Conn->prepare("SELECT * FROM admin WHERE id_admin = ?");
+    $Qry->bind_param("i", $id_access);
+    if (!$Qry->execute()) {
+        $error=$Conn->error;
+        echo '
+            <div class="alert alert-danger">
+                <small>Terjadi kesalahan pada saat membuka data dari database!<br>Keterangan : '.$error.'</small>
+            </div>
+        ';
+    }else{
+        $Result = $Qry->get_result();
+        $Data = $Result->fetch_assoc();
+        $Qry->close();
+
+        //Buat Variabel
+        $admin_name         = $Data['admin_name'];
+        $admin_email        = $Data['admin_email'];
+        $admin_password     = $Data['admin_password'];
+        $admin_image        = $Data['admin_image'];
+
+        //Routing URL image
+        if(!empty($admin_image)){
+            $image_url= ''.$base_url_with_path.'/image_proxy.php?dir=User&filename='.$admin_image;
+        }else{
+            $image_url= ''.$base_url_with_path.'/image_proxy.php?dir=User&filename=No-Image.png';
+        }
+
+        //Tampilkan Data
+        echo '
+            <div class="row mb-3 border-1 border-bottom">
+                <div class="col-12 mb-3 text-center">
+                    <img src="'.$image_url.'" alt="'.$admin_image.'" width="70%" class="rounded-circle">
+                </div>
+            </div>
+        ';
+        echo '
+            <div class="row mb-2">
+                <div class="col-5"><small>Nama</small></div>
+                <div class="col-2"><small>:</small></div>
+                <div class="col-5">
+                    <small class="text text-grayish">'.$admin_name.'</small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-5"><small>Email</small></div>
+                <div class="col-2"><small>:</small></div>
+                <div class="col-5">
+                    <small class="text text-grayish">'.$admin_email.'</small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-5"><small>Level</small></div>
+                <div class="col-2"><small>:</small></div>
+                <div class="col-5">
+                    <small class="text text-grayish">Admin</small>
+                </div>
+            </div>
+        ';
+    }
+?>
