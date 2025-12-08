@@ -43,8 +43,8 @@
                             <i class="bi bi-person"></i>
                         </div>
                         <div class="ps-3">
-                            <b id="put_siswa">00.00</b><br>
-                            <small>Siswa</small>
+                            <b id="put_pasien">00.00</b><br>
+                            <small>Pasien</small>
                         </div>
                     </div>
                 </div>
@@ -58,8 +58,8 @@
                             <i class="bi bi-building"></i>
                         </div>
                         <div class="ps-3">
-                            <b id="put_kelas">00.00</b><br>
-                            <small>Kelas/Rombel</small>
+                            <b id="put_kunjungan">00.00</b><br>
+                            <small>Kunjungan</small>
                         </div>
                     </div>
                 </div>
@@ -73,8 +73,8 @@
                             <i class="bi bi-send"></i>
                         </div>
                         <div class="ps-3">
-                            <b id="put_permintaan">00.00</b><br>
-                            <small>Jumlah Permintaan</small>
+                            <b id="put_ranap">00.00</b><br>
+                            <small>Rawat Inap</small>
                         </div>
                     </div>
                 </div>
@@ -88,8 +88,8 @@
                             <i class="bi bi-check"></i>
                         </div>
                         <div class="ps-3">
-                            <b id="put_permintaan_selesai">00.00</b><br>
-                            <small>Permintaan Selesai</small>
+                            <b id="put_rajal">00.00</b><br>
+                            <small>Rawat Jalan</small>
                         </div>
                     </div>
                 </div>

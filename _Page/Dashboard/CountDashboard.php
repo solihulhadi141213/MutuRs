@@ -7,38 +7,38 @@
 
     // Siapkan variabel default
     $response = [
-        "siswa" => 0,
-        "kelas" => 0,
-        "permintaan" => 0,
-        "selesai" => 0
+        "pasien" => 0,
+        "kunjungan" => 0,
+        "ranap" => 0,
+        "rajal" => 0
     ];
 
-    // Hitung jumlah siswa
-    $qSiswa = $Conn->query("SELECT COUNT(*) AS total FROM siswa");
-    if ($qSiswa) {
-        $dSiswa = $qSiswa->fetch_assoc();
-        $response['siswa'] = (int)$dSiswa['total'];
+    // Hitung jumlah Pasien
+    $qpasien = $Conn->query("SELECT COUNT(*) AS total FROM pasien");
+    if ($qpasien) {
+        $dPasien = $qpasien->fetch_assoc();
+        $response['pasien'] = (int)$dPasien['total'];
     }
 
-    // Hitung jumlah kelas
-    $QryKelas = $Conn->query("SELECT COUNT(*) AS total FROM kelas");
-    if ($QryKelas) {
-        $DataKelas = $QryKelas->fetch_assoc();
-        $response['kelas'] = (int)$DataKelas['total'];
+    // Hitung jumlah kunjungan
+    $QryKunjungan = $Conn->query("SELECT COUNT(*) AS total FROM kunjungan");
+    if ($QryKunjungan) {
+        $DataKunjungan = $QryKunjungan->fetch_assoc();
+        $response['kunjungan'] = (int)$DataKunjungan['total'];
     }
 
-    // Hitung Permintaan
-    $QryPermintaan = $Conn->query("SELECT COUNT(*) AS total FROM permintaan");
-    if ($QryPermintaan) {
-        $DataPermintaan = $QryPermintaan->fetch_assoc();
-        $response['permintaan'] = (int)$DataPermintaan['total'];
+    // Hitung Ranap
+    $QryRanap = $Conn->query("SELECT COUNT(*) AS total FROM kunjungan WHERE tujuan='Ranap'");
+    if ($QryRanap) {
+        $DataRanap = $QryRanap->fetch_assoc();
+        $response['ranap'] = (int)$DataRanap['total'];
     }
 
-     // Hitung Permintaan Selesai
-    $QryPermintaanSelesai = $Conn->query("SELECT COUNT(*) AS total FROM permintaan WHERE status='Selesai'");
-    if ($QryPermintaanSelesai) {
-        $DataPermintaanSelesai = $QryPermintaanSelesai->fetch_assoc();
-        $response['selesai'] = (int)$DataPermintaanSelesai['total'];
+     // Hitung Rajal
+    $QryRajal = $Conn->query("SELECT COUNT(*) AS total FROM kunjungan WHERE tujuan='Rajal'");
+    if ($QryRajal) {
+        $DataRajal = $QryRajal->fetch_assoc();
+        $response['rajal'] = (int)$DataRajal['total'];
     }
 
     // Output JSON

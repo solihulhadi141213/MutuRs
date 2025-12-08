@@ -10,7 +10,7 @@ function ShowGrafik() {
                 height: 400
             },
             series: [{
-                name: 'Permintaan',
+                name: 'Pasien',
                 data: seriesData
             }],
             xaxis: {
@@ -26,7 +26,7 @@ function ShowGrafik() {
             tooltip: {
                 y: {
                     formatter: function (value) {
-                        return value + ' Permintaan';
+                        return value + ' Pasien';
                     }
                 }
             },
@@ -34,7 +34,7 @@ function ShowGrafik() {
                 enabled: false
             },
             title: {
-                text: 'Grafik Permintaan Bulanan ' + new Date().getFullYear(),
+                text: 'Grafik Pasien Bulanan ' + new Date().getFullYear(),
                 align: 'center'
             }
         };
@@ -63,6 +63,11 @@ function tampilkanTanggal() {
     $('#tanggal_menarik').text(tanggal);
 }
 
+function formatRibuan(angka) {
+    if (!angka) return "0";
+    return new Intl.NumberFormat('id-ID').format(angka);
+}
+
 // Fungsi untuk menampilkan dashboard
 function ShowDashboard() {
     $.ajax({
@@ -70,10 +75,10 @@ function ShowDashboard() {
         url: '_Page/Dashboard/CountDashboard.php',
         dataType: 'json',
         success: function(data) {
-            $('#put_siswa').hide().html(data.siswa).fadeIn('slow');
-            $('#put_kelas').hide().html(data.kelas).fadeIn('slow');
-            $('#put_permintaan').hide().html(data.permintaan).fadeIn('slow');
-            $('#put_permintaan_selesai').hide().html(data.selesai).fadeIn('slow');
+            $('#put_pasien').hide().html(formatRibuan(data.pasien)).fadeIn('slow');
+            $('#put_kunjungan').hide().html(formatRibuan(data.kunjungan)).fadeIn('slow');
+            $('#put_ranap').hide().html(formatRibuan(data.ranap)).fadeIn('slow');
+            $('#put_rajal').hide().html(formatRibuan(data.rajal)).fadeIn('slow');
         },
         error: function(xhr, status, error) {
             console.error("Gagal mengambil data dashboard:", error);
@@ -94,5 +99,5 @@ $(document).ready(function () {
     //Jam Menarik
     tampilkanTanggal(); // Tampilkan tanggal saat halaman dimuat
     tampilkanJam();     // Tampilkan jam pertama kali
-    setInterval(tampilkanJam, 1000); // Perbarui jam setiap detik
+    setInterval(tampilkanJam, 10000); // Perbarui jam setiap 10 detik
 });

@@ -19,10 +19,10 @@
 
     // Query jumlah permintaan per bulan
     $sql = "
-        SELECT MONTH(tgl_permintaan) AS bulan, COUNT(id_permintaan) AS jumlah
-        FROM permintaan
-        WHERE YEAR(tgl_permintaan) = ?
-        GROUP BY MONTH(tgl_permintaan)
+        SELECT MONTH(tanggal) AS bulan, COUNT(id_pasien) AS jumlah
+        FROM pasien
+        WHERE YEAR(tanggal) = ?
+        GROUP BY MONTH(tanggal)
     ";
     $stmt = $Conn->prepare($sql);
     $stmt->bind_param("i", $tahun);
