@@ -3,7 +3,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "arunaparasilvanursari";
-    $db = "simrs";
+    $db = "simrs3";
     
     // Create connection
     $Conn = new mysqli($servername, $username, $password, $db);

@@ -5,14 +5,8 @@
         
         // Daftar halaman dan modal yang terkait
         $modals = [
-            "MyProfile"             => "_Page/MyProfile/ModalMyProfile.php",
-            "Akses"                 => "_Page/Akses/ModalAkses.php",
-            "Kelas"                 => "_Page/Kelas/ModalKelas.php",
-            "Siswa"                 => "_Page/Siswa/ModalSiswa.php",
-            "Permintaan"            => "_Page/Permintaan/ModalPermintaan.php",
-            "PermintaanSiswa"       => "_Page/PermintaanSiswa/ModalPermintaanSiswa.php",
-            "SettingEmail"          => "_Page/SettingEmail/ModalSettingEmail.php",
-            "Bantuan"               => "_Page/Bantuan/ModalBantuan.php"
+            "MyProfile" => "_Page/MyProfile/ModalMyProfile.php",
+            "Radiologi" => "_Page/Radiologi/ModalRadiologi.php"
         ];
 
         // Cek apakah halaman memiliki modal terkait dan sertakan file modalnya

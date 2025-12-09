@@ -8,13 +8,7 @@
         // Routing Javascript Berdasarkan Halaman
         $scripts = [
             "MyProfile"         => "_Page/MyProfile/MyProfile.js",
-            "Akses"             => "_Page/Akses/Akses.js",
-            "Kelas"             => "_Page/Kelas/Kelas.js",
-            "Siswa"             => "_Page/Siswa/Siswa.js",
-            "Permintaan"        => "_Page/Permintaan/Permintaan.js",
-            "PermintaanSiswa"   => "_Page/PermintaanSiswa/PermintaanSiswa.js",
-            "SettingGeneral"    => "_Page/SettingGeneral/SettingGeneral.js",
-            "Bantuan"           => "_Page/Bantuan/Bantuan.js"
+            "Radiologi"         => "_Page/Radiologi/Radiologi.js"
         ];
 
         // Cek apakah halaman ada dalam daftar dan sertakan file JS yang sesuai
