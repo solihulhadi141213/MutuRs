@@ -19,7 +19,6 @@
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <small>
                             Berikut ini adalah halaman profil yang digunakan untuk mengelola informasi akses anda. 
-                            Pada halaman ini anda bisa melakukan perubahan data akses (Nama, Email, Password dan Foto Profile).
                         </small>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>

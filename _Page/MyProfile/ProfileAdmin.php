@@ -7,7 +7,7 @@
                 </b>
             </div>
             <div class="col-4 text-end">
-                <button type="button" class="btn btn-sm btn-outline-dark btn-floating"  data-bs-toggle="dropdown" aria-expanded="false">
+                <!-- <button type="button" class="btn btn-sm btn-outline-dark btn-floating"  data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-three-dots-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
@@ -29,7 +29,7 @@
                             <i class="bi bi-key"></i> Ubah Password
                         </a>
                     </li>
-                </ul>
+                </ul> -->
             </div>
         </div>
     </div>
