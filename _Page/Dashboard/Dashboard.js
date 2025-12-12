@@ -6,8 +6,8 @@ function ShowGrafik() {
 
         var options = {
             chart: {
-                type: 'area',
-                height: 400
+                type: 'bar',
+                height: 500
             },
             series: [{
                 name: 'Pasien',
@@ -34,7 +34,7 @@ function ShowGrafik() {
                 enabled: false
             },
             title: {
-                text: 'Grafik Pasien Bulanan ' + new Date().getFullYear(),
+                text: 'Jumlah Pemeriksaan Radiologi ' + new Date().getFullYear(),
                 align: 'center'
             }
         };
@@ -54,14 +54,6 @@ function tampilkanJam() {
     $('#jam_menarik').text(`${jam}:${menit}:${detik}`);
 }
 
-// Fungsi untuk menampilkan tanggal
-function tampilkanTanggal() {
-    const waktu = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const tanggal = waktu.toLocaleDateString('id-ID', options);
-    
-    $('#tanggal_menarik').text(tanggal);
-}
 
 function formatRibuan(angka) {
     if (!angka) return "0";
@@ -86,6 +78,72 @@ function ShowDashboard() {
     });
 }
 
+//fungsi untuk menampilkan rekapitulasi pemeriksaan
+function TabelRekapPemeriksaan() {
+
+    var ProsesFilterPemeriksaan = $('#ProsesFilterPemeriksaan').serialize();
+
+    // Elemen tabel
+    var tabel = $('#tabel_rekap_pemeriksaan');
+
+    // Fade-out isi tabel
+    tabel.fadeTo(200, 0.3, function () {
+
+        // Tampilkan loading spinner
+        tabel.html(`
+            <tr>
+                <td colspan="5" class="text-center py-3">
+                    <div class="spinner-border text-success" role="status" style="width:2.2rem;height:2.2rem;"></div>
+                    <div><small>Memuat data...</small></div>
+                </td>
+            </tr>
+        `);
+
+        $.ajax({
+            type    : 'POST',
+            url     : '_Page/Dashboard/TabelRekapPemeriksaan.php',
+            data    : ProsesFilterPemeriksaan,
+            success: function(data) {
+
+                // Ganti isi tabel dengan data baru
+                tabel.html(data);
+
+                // Fade-in tabel perlahan
+                tabel.fadeTo(300, 1);
+            },
+
+            error: function() {
+                tabel.html(`
+                    <tr>
+                        <td colspan="5" class="text-center text-danger py-3">
+                            <small>Terjadi kesalahan memuat data</small>
+                        </td>
+                    </tr>
+                `);
+                tabel.fadeTo(300, 1);
+            }
+        });
+    });
+}
+
+function TabelDetail() {
+    //Tangkap Form
+    var ProsesFilterDetail = $('#ProsesFilterDetail').serialize();
+
+    // Loading Table
+    $('#TabelPelayananRadiologi').html('<tr><td class="text-center" colspan="9"><small>Loading..</small></td></tr>');
+
+    //Tampilkan Tabel Dengan AJAX
+    $.ajax({
+        type 	    : 'POST',
+        url 	    : '_Page/Dashboard/TabelPelayananRadiologi.php',
+        data        : ProsesFilterDetail,
+        success     : function(data){
+            $('#TabelPelayananRadiologi').html(data);
+        }
+    });
+}
+
 
 $(document).ready(function () {
     //Menampilkan Data Pertama Kali
@@ -93,11 +151,132 @@ $(document).ready(function () {
     ShowDashboard();
 
     ShowDashboard();
+    TabelRekapPemeriksaan();
+
+    //Ketika Filter Di Submit
+    $('#ProsesFilterPemeriksaan').submit(function(){
+        $('#page_rekap_pemeriksaan').val("1");
+        TabelRekapPemeriksaan();
+        $('#ModalFilterPemeriksaan').modal('hide');
+    });
+
+    //Pagging tabel pemeriksaan
+    $(document).on('click', '#next_button_rekap_pemeriksaan', function() {
+        var page_now = parseInt($('#page_rekap_pemeriksaan').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now + 1;
+        $('#page_rekap_pemeriksaan').val(next_page);
+        TabelRekapPemeriksaan(0);
+    });
+    $(document).on('click', '#prev_button_rekap_pemeriksaan', function() {
+        var page_now = parseInt($('#page_rekap_pemeriksaan').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now - 1;
+        $('#page_rekap_pemeriksaan').val(next_page);
+        TabelRekapPemeriksaan(0);
+    });
+
+    //Ketika click 'show_modal_detail'
+    $(document).on('click', '.show_modal_detail', function(){
+        var permintaan_pemeriksaan = $(this).data('key');
+        var periode_1 = $(this).data('periode_1');
+        var periode_2 = $(this).data('periode_2');
+
+        //Tampilkan Modal
+        $('#ModalDetail').modal('show');
+
+        //menempelkan ke form
+        $('#page_detail').val('1');
+        $('#periode_1_detail').val(periode_1);
+        $('#periode_2_detail').val(periode_2);
+        $('#keyword_detail').val(permintaan_pemeriksaan);
+
+        TabelDetail();
+    });
+
+    //Pagging tabel Detail
+    $(document).on('click', '#next_button_detail', function() {
+        var page_now = parseInt($('#page_detail').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now + 1;
+        $('#page_detail').val(next_page);
+        TabelDetail(0);
+    });
+    $(document).on('click', '#prev_button_detail', function() {
+        var page_now = parseInt($('#page_detail').val(), 10); // Pastikan nilai diambil sebagai angka
+        var next_page = page_now - 1;
+        $('#page_detail').val(next_page);
+        TabelDetail(0);
+    });
+
+    //Ketika Modal Export Pemeriksaan Muncul
+    $('#ModalExportRekap').on('show.bs.modal', function (e) {
+
+        //Ambil Data Dari Form 'ProsesFilterPemeriksaan'
+        var ProsesFilterPemeriksaan = $('#ProsesFilterPemeriksaan').serialize();
+
+        //Pasing Sengan AJAX ke 'FormExportPemeriksaan'
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Dashboard/FormExportPemeriksaan.php',
+            data        : ProsesFilterPemeriksaan,
+            success     : function(data){
+                $('#FormExportPemeriksaan').html(data);
+            }
+        });
+
+    });
+
+    //Ketika Modal Modal Detail Pemeriksaan
+    $('#ModalDetailPemeriksaan').on('show.bs.modal', function (e) {
+
+        //Ambil Data 'id_rad'
+        var id_rad = $(e.relatedTarget).data('id');
+
+        //Pasing Sengan AJAX ke 'FormExportPemeriksaan'
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Dashboard/FormDetailPemeriksaan.php',
+            data        : {id_rad: id_rad},
+            success     : function(data){
+                $('#FormDetailPemeriksaan').html(data);
+            }
+        });
+
+    });
+
+    // Ketika Click 'kembali_ke_detai'
+    $('.kembali_ke_detai').on('click', function() {
+        $('#ModalDetailPemeriksaan').modal('hide');
+        $('#ModalExportDataPasien').modal('hide');
+        $('#ModalDetail').modal('show');
+    });
+
+    //Ketika Click 'export_data_pasien'
+    $('#export_data_pasien').on('click', function() {
+        //Ambil Data dari Form 'ProsesFilterDetail'
+        var ProsesFilterDetail = $('#ProsesFilterDetail').serialize();
+
+        //Tampilkan Modal
+        $('#ModalExportDataPasien').modal('show');
+
+        //tutup modal detail
+        $('#ModalDetail').modal('hide');
+
+        //Loading Form
+        $('#FormExportDataPasien').html('Loading...');
+
+        //Pasing Sengan AJAX ke 'FormExportPemeriksaan'
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Dashboard/FormExportDataPasien.php',
+            data        : ProsesFilterDetail,
+            success     : function(data){
+                $('#FormExportDataPasien').html(data);
+            }
+        });
+
+    });
+
+
     // Update setiap 10 detik
-    setInterval(ShowDashboard, 10000);
+    setInterval(ShowDashboard, 50000);
     
-    //Jam Menarik
-    tampilkanTanggal(); // Tampilkan tanggal saat halaman dimuat
-    tampilkanJam();     // Tampilkan jam pertama kali
-    setInterval(tampilkanJam, 10000); // Perbarui jam setiap 10 detik
 });

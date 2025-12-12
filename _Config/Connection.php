@@ -1,5 +1,5 @@
 <?php
-    //Ini adalah halaman untuk melakukan konfigurasi database
+    //KONFIGURASI KE SIMRS
     $servername = "localhost";
     $username = "root";
     $password = "arunaparasilvanursari";
