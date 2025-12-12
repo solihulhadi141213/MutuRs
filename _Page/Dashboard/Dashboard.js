@@ -275,6 +275,81 @@ $(document).ready(function () {
 
     });
 
+    //Modal Find
+    $('#ModalFind').on('show.bs.modal', function (e) {
+
+        //Ambil Data 'id_rad'
+        var permintaan_pemeriksaan = $(e.relatedTarget).data('key');
+
+        //Kosongkan Notifikasi
+        $('#NotifikasiReplikasi').html('');
+
+        // Loading Form 'FormReplikasi'
+        $('#FormReplikasi').html('Loading...');
+
+        //Pasing Sengan AJAX ke 'FormExportPemeriksaan'
+        $.ajax({
+            type 	    : 'POST',
+            url 	    : '_Page/Dashboard/FormReplikasi.php',
+            data        : {permintaan_pemeriksaan: permintaan_pemeriksaan},
+            success     : function(data){
+                $('#FormReplikasi').html(data);
+            }
+        });
+
+    });
+
+    // Submit Proses Replikasi
+    $('#ProsesReplikasi').on('submit', function(e) {
+        e.preventDefault(); // Mencegah submit form default
+
+        var formData = $(this).serialize();
+
+        // Loading
+        $('#NotifikasiReplikasi').html('<small>Loading...</small>');
+
+        $.ajax({
+            type: 'POST',
+            url: '_Page/Dashboard/ProsesReplikasi.php',
+            data: formData,
+            dataType: 'json',
+
+            success: function(response) {
+                var status  = response.status;
+                var message = response.message;
+
+                if (status === "Success" || status === "success") {
+                    // Tutup modal
+                    $('#ModalFind').modal('hide');
+
+                    // Reload data
+                    TabelRekapPemeriksaan();
+
+                    Swal.fire(
+                        'Success!',
+                        message,
+                        'success'
+                    );
+                } else {
+                    // Handle error
+                    Swal.fire(
+                        'Gagal!',
+                        message,
+                        'error'
+                    );
+                }
+            },
+
+            error: function(xhr, status, error) {
+                Swal.fire(
+                    'Error!',
+                    'Terjadi kesalahan koneksi ke server: ' + error,
+                    'error'
+                );
+            }
+        });
+    });
+
 
     // Update setiap 10 detik
     setInterval(ShowDashboard, 50000);

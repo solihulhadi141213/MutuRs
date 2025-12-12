@@ -144,7 +144,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalFind" data-key="'.$permintaan_pemeriksaan.'" data-periode_1="'.$periode_1.'" data-periode_2="'.$periode_2.'">
+                                <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalFind" data-key="'.$permintaan_pemeriksaan.'">
                                     <i class="bi bi-binoculars"></i> Find
                                 </a>
                             </li>
