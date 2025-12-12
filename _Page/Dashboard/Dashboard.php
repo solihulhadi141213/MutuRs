@@ -82,14 +82,14 @@
 
     <div class="row">
         <div class="col-lg-12">
-            
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body" id="chart">
-                           <!-- Menampilkan Grafik Disini -->
-                        </div>
-                    </div>
+            <div class="card">
+                <div class="card-header text-end">
+                    <button type="button" class="btn btn-md btn-floating btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalTahun">
+                        <i class="bi bi-calendar"></i>
+                    </button>
+                </div>
+                <div class="card-body" id="chart">
+                    <!-- Menampilkan Grafik Disini -->
                 </div>
             </div>
         </div>

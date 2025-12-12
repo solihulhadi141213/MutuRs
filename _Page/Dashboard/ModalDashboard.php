@@ -5,7 +5,45 @@
     // Periode Akhir: tanggal terakhir bulan sekarang
     $periode_akhir = date('Y-m-t');
 ?>
-
+<div class="modal fade" id="ModalTahun" tabindex="-1">
+    <div class="modal-dialog modal-md ">
+        <div class="modal-content">
+            <form action="javascript:void(0);" id="ProsesFilterTahun">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark">
+                        <i class="bi bi-calendar"></i> Pilih Periode Tahun
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <label for="periode_tahun">
+                                <small>Periode Tahun</small>
+                            </label>
+                            <select name="periode_tahun" id="periode_tahun" class="form-control">
+                                <?php
+                                    $query = mysqli_query($Conn, "SELECT DISTINCT LEFT(waktu, 4) AS tahun FROM radiologi WHERE waktu <> '' ORDER BY tahun DESC ");
+                                    while ($row = mysqli_fetch_assoc($query)) {
+                                        echo '<option value="'.$row['tahun'].'">'.$row['tahun'].'</option>';
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-rounded">
+                        <i class="bi bi-check"></i> Tampilkan
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-rounded" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Tutup
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="ModalFilterPemeriksaan" tabindex="-1">
     <div class="modal-dialog modal-md">
         <div class="modal-content">

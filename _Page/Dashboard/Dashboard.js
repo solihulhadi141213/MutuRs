@@ -1,6 +1,9 @@
+var chart = null;
+
 // Fungsi Untuk Menampilkan Grafik
-function ShowGrafik() {
-    $.getJSON("_Page/Dashboard/Grafik.php", function (data) {
+function ShowGrafik(tahun) {
+    $.getJSON("_Page/Dashboard/Grafik.php", { tahun: tahun }, function (data) {
+        
         const categories = data.map(item => item.x);
         const seriesData = data.map(item => parseFloat(item.y));
 
@@ -34,15 +37,22 @@ function ShowGrafik() {
                 enabled: false
             },
             title: {
-                text: 'Jumlah Pemeriksaan Radiologi ' + new Date().getFullYear(),
+                text: 'Jumlah Pemeriksaan Radiologi ' + tahun,
                 align: 'center'
             }
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        // Hapus grafik lama
+        if (chart !== null) {
+            chart.destroy();
+        }
+
+        // Render grafik baru
+        chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
     });
 }
+
 
 // Fungsi untuk menampilkan jam digital
 function tampilkanJam() {
@@ -147,11 +157,21 @@ function TabelDetail() {
 
 $(document).ready(function () {
     //Menampilkan Data Pertama Kali
-    ShowGrafik();
+    var tahunSekarang = new Date().getFullYear();
+    ShowGrafik(tahunSekarang);
     ShowDashboard();
 
     ShowDashboard();
     TabelRekapPemeriksaan();
+
+    // Saat form filter tahun disubmit
+    $('#ProsesFilterTahun').submit(function(){
+        var tahun = $('#periode_tahun').val();
+        ShowGrafik(tahun);
+
+        // Tutup modal
+        $('#ModalTahun').modal('hide');
+    });
 
     //Ketika Filter Di Submit
     $('#ProsesFilterPemeriksaan').submit(function(){

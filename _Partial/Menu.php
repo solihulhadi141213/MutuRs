@@ -19,16 +19,6 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if($PageMenu=="Medrek"){echo "";}else{echo "collapsed";} ?>" href="index.php?Page=Medrek">
-                <i class="bi bi-building"></i> <span>Rekam Medis</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php if($PageMenu=="Laboratorium"){echo "";}else{echo "collapsed";} ?>" href="index.php?Page=Laboratorium">
-                <i class="bi bi-filter"></i> <span>Laboratorium</span>
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link <?php if($PageMenu=="Radiologi"){echo "";}else{echo "collapsed";} ?>" href="index.php?Page=Radiologi">
                 <i class="bi bi-calendar-week"></i> <span>Radiologi</span>
             </a>
